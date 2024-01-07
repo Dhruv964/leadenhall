@@ -1,0 +1,39 @@
+{
+   "name": "dashboard",
+   "version": "0.1.0",
+   "private": true,
+   "scripts": {
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start",
+      "lint": "next lint"
+   },
+   "dependencies": {
+      "@appwrite.io/pink": "^0.0.6-rc.15",
+      "@firebase/auth": "^1.1.0",
+      "@firebase/firestore": "^4.1.0",
+      "@nextui-org/react": "^1.0.0-beta.10",
+      "apexcharts": "^3.35.5",
+      "appwrite": "^13.0.0",
+      "firebase": "^10.1.0",
+      "firebase-admin": "^11.10.1",
+      "fs": "^0.0.1-security",
+      "next": "12.3.0",
+      "next-auth": "^4.23.0",
+      "next-themes": "^0.2.1",
+      "node-appwrite": "^11.0.0",
+      "openai": "^4.8.0",
+      "react": "18.2.0",
+      "react-apexcharts": "^1.4.0",
+      "react-dom": "18.2.0",
+      "undici": "^5.24.0"
+   },
+   "devDependencies": {
+      "@types/node": "18.7.18",
+      "@types/react": "18.0.20",
+      "@types/react-dom": "18.0.6",
+      "eslint": "8.23.1",
+      "eslint-config-next": "12.3.0",
+      "typescript": "4.8.3"
+   }
+}
