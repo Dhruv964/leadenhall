@@ -17,7 +17,7 @@ export default function AuthenticationPage() {
         href="/examples/authentication"
         className={cn(
           buttonVariants({ variant: "ghost" }),
-          "absolute right-4 hidden top-4 md:right-8 md:top-8",
+          "absolute right-4 hidden top-4 md:right-8 md:top-8"
         )}
       >
         Login
@@ -39,11 +39,13 @@ export default function AuthenticationPage() {
         <div className="relative z-20 mt-auto">
           <blockquote className="space-y-2">
             <p className="text-lg">
-              &ldquo;This library has saved me countless hours of work and
-              helped me deliver stunning designs to my clients faster than ever
-              before.&rdquo;
+              &ldquo;Experience the future of customer engagement with Blozum AI
+              - our innovative assistant powered by generative AI. We create
+              human-like conversations that connect, assist, and drive
+              conversions. Elevate your business with personalized interactions
+              that turn visitors into loyal buyers.&rdquo;
             </p>
-            <footer className="text-sm">Sofia Davis</footer>
+            <footer className="text-sm">Blozum AI</footer>
           </blockquote>
         </div>
       </div>

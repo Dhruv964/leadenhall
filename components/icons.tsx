@@ -34,9 +34,12 @@ import {
   LayoutTemplate,
 } from "lucide-react";
 
+import { FaGoogle } from "react-icons/fa";
+
 export type Icon = LucideIcon;
 
 export const Icons = {
+  google: FaGoogle,
   inbox: Inbox,
   template: LayoutTemplate,
   dashboard: LayoutDashboardIcon,

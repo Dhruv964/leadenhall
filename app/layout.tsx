@@ -9,8 +9,8 @@ import { getServerSession } from "next-auth";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "Basic dashboard with Next.js and Shadcn",
+  title: "Blozum AI",
+  description: "Dashboard",
 };
 
 export default async function RootLayout({
