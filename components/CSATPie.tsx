@@ -6,7 +6,7 @@ const data = [
   { name: "Group D", value: 200 },
 ];
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const COLORS = ["#22c55e", "#FFBB28", "#FF8042"];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -45,8 +45,8 @@ export function CSATPie() {
           cy="50%"
           labelLine={false}
           label={renderCustomizedLabel}
-          outerRadius={80}
-          fill="#8884d8"
+          outerRadius={150}
+          fill="#22c55e"
           dataKey="value"
         >
           {data.map((entry, index) => (

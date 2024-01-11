@@ -42,7 +42,7 @@ const data = [
   },
 ];
 
-export function ConversationChart() {
+export function ChatChart() {
   return (
     <ResponsiveContainer width="100%" height={350}>
       <LineChart

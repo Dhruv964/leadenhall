@@ -1,10 +1,10 @@
-import React, { createContext, useState, useContext } from 'react';
+import React, { createContext, useState, useContext } from "react";
 
 // Create a Context
 const UserContext = createContext();
 
 // Hook to use the context
-export const useIBValues = () => useContext(UserContext);
+export const useUserValues = () => useContext(UserContext);
 
 // Provider Component
 export const UserValuesProvider = ({ children }) => {
@@ -12,12 +12,11 @@ export const UserValuesProvider = ({ children }) => {
 
   // The context value that will be supplied to any descendants of this component.
   const contextValue = {
-    userValues, setUserValues,
+    userValues,
+    setUserValues,
   };
 
   return (
-    <UserContext.Provider value={contextValue}>
-      {children}
-    </UserContext.Provider>
+    <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
   );
 };
