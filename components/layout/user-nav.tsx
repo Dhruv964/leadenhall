@@ -46,7 +46,13 @@ export function UserNav() {
             <DropdownMenuItem>Settings</DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => signOut()}>Log out</DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() =>
+              signOut({ callbackUrl: "https://analytics.blozum.com/" })
+            }
+          >
+            Log out
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     );

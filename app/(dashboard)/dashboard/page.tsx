@@ -2,9 +2,7 @@
 import { CSATPie } from "@/components/CSATPie";
 import { ConversationChart } from "@/components/ConversationChart";
 import { ChatChart } from "@/components/ChatChart";
-import MiniLineChart from "@/components/miniLineChart";
 import { Overview } from "@/components/overview";
-import { RecentSales } from "@/components/recent-sales";
 import {
   Card,
   CardContent,
@@ -20,7 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   MessageCircle,
   HelpCircle,
@@ -30,23 +27,50 @@ import {
   Activity,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { accounts } from "./inbox/data";
+import { useEffect } from "react";
+import { databases } from "@/appwrite";
+import { useRouter } from "next/navigation";
 
-export default async function page() {
+export default function page() {
   const { data: session } = useSession();
-  if (session) {
-      const email = session.user?.email; 
-      const response = await fetch('api/check_if_email_exists', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
+  const router = useRouter();
+
+  useEffect(() => {
+    async function check() {
+      // const documents = await databases.listDocuments(
+      //   "BLZ_Analytics_Dashboard",
+      //   "analytics_dashboard_users"
+      // );
+
+      // const temp = documents["documents"].find(
+      //   (e: any) => e.email == session?.user?.email
+      // );
+
+      // if (temp == null) {
+      //   router.push("/");
+      //   console.log("logged out");
+      // } else {
+      //   console.log("logged in success");
+      // }
+
+      const response = await fetch("api/checkPremium", {
+        method: "GET",
       });
-      
       const data = await response.json();
-      console.log(data);
-  }
+      const userData = data["documents"].find(
+        (e: any) => e.email == session?.user?.email
+      );
+      if (userData == null) {
+        router.push("/");
+        console.log("logged out");
+      } else {
+        console.log("logged in success");
+      }
+      console.log("start");
+    }
+
+    check();
+  }, [session]);
 
   return (
     <ScrollArea className="h-full">
