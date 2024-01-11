@@ -44,7 +44,7 @@ export default function UserAuthForm() {
 
   return (
     <>
-      <Form {...form}>
+      {/* <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-2 w-full"
@@ -82,7 +82,7 @@ export default function UserAuthForm() {
             Or continue with
           </span>
         </div>
-      </div>
+      </div> */}
       <GoogleSignInButton />
     </>
   );

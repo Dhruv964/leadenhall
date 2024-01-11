@@ -60,7 +60,7 @@ export function Mail({
         direction="horizontal"
         onLayout={(sizes: number[]) => {
           document.cookie = `react-resizable-panels:layout=${JSON.stringify(
-            sizes,
+            sizes
           )}`;
         }}
         className="h-full max-h-[800px] items-stretch"
@@ -72,14 +72,13 @@ export function Mail({
           minSize={5}
           maxSize={10}
           className={cn(
-            isCollapsed &&
-              "transition-all duration-300 ease-in-out",
+            isCollapsed && "transition-all duration-300 ease-in-out"
           )}
         >
           <div
             className={cn(
               "flex h-[52px] items-center justify-center",
-              isCollapsed ? "h-[52px]" : "px-2",
+              isCollapsed ? "h-[52px]" : "px-2"
             )}
           >
             <AccountSwitcher isCollapsed={isCollapsed} accounts={accounts} />

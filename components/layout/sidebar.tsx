@@ -19,7 +19,7 @@ export default function Sidebar() {
           </div>
           <div className="mt-10">
             <Card>
-              <CardContent className=" flex flex-col px-2 m-2 ">
+              <CardContent className="flex flex-col px-2 m-2 ">
                 <div className="items-center space-y-4 p-4">
                   <p>Blozum Credits</p>
                   <Progress value={33} />
