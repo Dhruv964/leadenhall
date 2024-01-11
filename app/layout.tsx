@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { getServerSession } from "next-auth";
+import { UserValuesProvider } from './UserContext.js';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,8 +24,10 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} overflow-hidden`}>
         <Providers session={session}>
+          <UserValuesProvider>
           <Toaster />
           {children}
+          </UserValuesProvider>
         </Providers>
       </body>
     </html>
