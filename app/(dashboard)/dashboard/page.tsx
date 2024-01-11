@@ -32,8 +32,21 @@ import {
 import { useSession } from "next-auth/react";
 import { accounts } from "./inbox/data";
 
-export default function page() {
+export default async function page() {
   const { data: session } = useSession();
+  if (session) {
+      const email = session.user?.email; 
+      const response = await fetch('api/check_if_email_exists', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+      
+      const data = await response.json();
+      console.log(data);
+  }
 
   return (
     <ScrollArea className="h-full">

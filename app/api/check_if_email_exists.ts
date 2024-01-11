@@ -1,13 +1,15 @@
 /* eslint-disable import/no-anonymous-default-export */
 //@ts-nocheck
 import { Client, Databases, ID, Query } from 'node-appwrite';
-import { getSession } from "next-auth/react";
+// import { getSession } from "next-auth/react";
 
 export default async (req, res) => {
-    const session = await getSession({ req });
+    // const session = await getSession({ req });
     const client = new Client();
     const databases = new Databases(client);
-    const user_email = session?.user?.email;
+    // const user_email = session?.user?.email;
+    console.log(req.body);
+    const user_email = req.body;
 
     client
             .setEndpoint(process.env.APPWRITE_ENDPOINT)  
