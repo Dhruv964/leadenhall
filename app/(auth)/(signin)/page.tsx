@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Logo from "@/public/blozum.svg";
 export const metadata: Metadata = {
-  title: "Authentication",
-  description: "Authentication forms built using the components.",
+  title: "Blozum AI",
+  description: "Authentication Page",
 };
 
 export default function AuthenticationPage() {
