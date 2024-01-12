@@ -31,7 +31,7 @@ export default function AuthenticationPage() {
             className="flex items-center"
           >
             <Image src={Logo} alt="" height={40} width={40} />
-            <span className="lex font-bold dark:text-white md:text-xl ml-2 rtl:ml-0 rtl:mr-2 self-center text-2xl text-gray-900 whitespace-nowrap">
+            <span className="lex font-bold dark:text-white md:text-xl ml-2 rtl:ml-0 rtl:mr-2 self-center text-2xl whitespace-nowrap">
               Blozum
             </span>
           </Link>

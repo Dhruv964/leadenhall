@@ -27,32 +27,16 @@ import {
   Activity,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
-import { databases } from "@/appwrite";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { signOut } from "next-auth/react";
 
 export default function page() {
   const { data: session } = useSession();
-  const router = useRouter();
+
+  const [analytics, setAnalytics] = useState();
 
   useEffect(() => {
     async function check() {
-      // const documents = await databases.listDocuments(
-      //   "BLZ_Analytics_Dashboard",
-      //   "analytics_dashboard_users"
-      // );
-
-      // const temp = documents["documents"].find(
-      //   (e: any) => e.email == session?.user?.email
-      // );
-
-      // if (temp == null) {
-      //   router.push("/");
-      //   console.log("logged out");
-      // } else {
-      //   console.log("logged in success");
-      // }
-
       const response = await fetch("api/checkPremium", {
         method: "GET",
       });
@@ -61,12 +45,16 @@ export default function page() {
         (e: any) => e.email == session?.user?.email
       );
       if (userData == null) {
-        router.push("/");
+        signOut({ callbackUrl: "https://analytics.blozum.com/" });
         console.log("logged out");
       } else {
-        console.log("logged in success");
+        const response = await fetch("api/analytics", {
+          method: "GET",
+        });
+        const data1 = await response.json();
+        setAnalytics(data1);
+        console.log("login success");
       }
-      console.log("start");
     }
 
     check();
