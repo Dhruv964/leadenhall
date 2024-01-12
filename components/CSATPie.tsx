@@ -6,7 +6,7 @@ const data = [
   { name: "Group D", value: 200 },
 ];
 
-const COLORS = ["#22c55e", "#FFBB28", "#FF8042"];
+const COLORS = ["#22c55e", "#98FB98", "#FF8042"];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -26,7 +26,7 @@ const renderCustomizedLabel = ({
     <text
       x={x}
       y={y}
-      fill="white"
+      // fill="white"
       textAnchor={x > cx ? "start" : "end"}
       dominantBaseline="central"
     >
