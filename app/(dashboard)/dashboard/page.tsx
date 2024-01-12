@@ -33,6 +33,7 @@ import { signOut } from "next-auth/react";
 export default function page() {
   const { data: session } = useSession();
 
+  const [loading, setLoading] = useState(true);
   const [analytics, setAnalytics] = useState();
 
   useEffect(() => {
@@ -45,9 +46,10 @@ export default function page() {
         (e: any) => e.email == session?.user?.email
       );
       if (userData == null) {
-        signOut({ callbackUrl: "https://analytics.blozum.com/" });
         console.log("logged out");
+        signOut({ callbackUrl: "https://analytics.blozum.com/" });
       } else {
+        setLoading(false);
         const response = await fetch("api/analytics", {
           method: "GET",
         });
@@ -60,7 +62,11 @@ export default function page() {
     check();
   }, [session]);
 
-  return (
+  return loading ? (
+    <div className="flex items-center justify-center h-full">
+      Loading Final Bit of Information...
+    </div>
+  ) : (
     <ScrollArea className="h-full">
       <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
         <div className="flex items-center justify-between space-y-2">
