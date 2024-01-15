@@ -34,7 +34,16 @@ export default function page() {
   const { data: session } = useSession();
 
   const [loading, setLoading] = useState(true);
-  const [analytics, setAnalytics] = useState();
+
+  //CARD ANALYTICS
+
+  const [buttonClicks, setButtonClicks] = useState(0);
+  const [totalQuestions, setTotalQuestions] = useState(0);
+  const [averageBotResponseTime, setAverageBotResponseTime] = useState(0);
+  const [noOfUniqueConversations, setNoOfUniqueConversations] = useState(0);
+  const [averageConversationDuration, setAverageConversationDuration] =
+    useState(0);
+  const [engagedConversations, setEngagedConversations] = useState(0);
 
   useEffect(() => {
     async function check() {
@@ -42,6 +51,7 @@ export default function page() {
         method: "GET",
       });
       const data = await response.json();
+      // console.log(data);
       const userData = data["documents"].find(
         (e: any) => e.email == session?.user?.email
       );
@@ -54,7 +64,48 @@ export default function page() {
           method: "GET",
         });
         const data1 = await response.json();
-        setAnalytics(data1);
+
+        const buttonClicksData = JSON.parse(data1.button_clicks);
+        const totalQuestionsData = JSON.parse(data1.total_questions);
+        const averageBotResponseTimeData = JSON.parse(
+          data1.average_bot_response_time
+        );
+        const noOfUniqueConversationsData = JSON.parse(
+          data1.no_of_unique_conversations
+        );
+        const averageConversationDurationData = JSON.parse(
+          data1.average_conversation_duration
+        );
+        const engagedConversationsData = JSON.parse(
+          data1.engaged_conversations
+        );
+
+        const today = new Date();
+        const yesterday = new Date(today);
+        // yesterday.setDate(today.getDate() - 1);
+        yesterday.setDate(today.getDate());
+
+        const month = yesterday.getMonth() + 1;
+        const formattedMonth = month < 10 ? `0${month}` : month;
+
+        const formattedYesterday = `${yesterday.getDate()}-${formattedMonth}-${yesterday.getFullYear()}`;
+
+        setButtonClicks(buttonClicksData[formattedYesterday] || 0);
+        setTotalQuestions(totalQuestionsData[formattedYesterday] || 0);
+        setAverageBotResponseTime(
+          averageBotResponseTimeData[formattedYesterday] || 0
+        );
+        setNoOfUniqueConversations(
+          noOfUniqueConversationsData[formattedYesterday] || 0
+        );
+        setAverageConversationDuration(
+          averageConversationDurationData[formattedYesterday] || 0
+        );
+        setEngagedConversations(
+          engagedConversationsData[formattedYesterday] || 0
+        );
+
+        console.log(data1);
         console.log("login success");
       }
     }
@@ -95,24 +146,28 @@ export default function page() {
               <Users />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">223</div>
-              <p className="text-xs text-muted-foreground">
+              <div className="text-2xl font-bold">
+                {noOfUniqueConversations.toLocaleString()}
+              </div>
+              {/* <p className="text-xs text-muted-foreground">
                 +20.1% from last month
-              </p>
+              </p> */}
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                Total Conversations
+                Average Conversation Duration (sec)
               </CardTitle>
               <MessageCircle />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">2350</div>
-              <p className="text-xs text-muted-foreground">
+              <div className="text-2xl font-bold">
+                {averageConversationDuration.toLocaleString()}
+              </div>
+              {/* <p className="text-xs text-muted-foreground">
                 +180.1% from last month
-              </p>
+              </p> */}
             </CardContent>
           </Card>
           <Card>
@@ -123,10 +178,12 @@ export default function page() {
               <HelpCircle />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">12,234</div>
-              <p className="text-xs text-muted-foreground">
+              <div className="text-2xl font-bold">
+                {totalQuestions.toLocaleString()}
+              </div>
+              {/* <p className="text-xs text-muted-foreground">
                 +19% from last month
-              </p>
+              </p> */}
             </CardContent>
           </Card>
           <Card>
@@ -137,38 +194,44 @@ export default function page() {
               <MousePointerClick />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">45,000</div>
-              <p className="text-xs text-muted-foreground">
+              <div className="text-2xl font-bold">
+                {buttonClicks.toLocaleString()}
+              </div>
+              {/* <p className="text-xs text-muted-foreground">
                 +20.1% from last month
-              </p>
+              </p> */}
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                Average Bot Response Time
+                Average Bot Response Time (sec)
               </CardTitle>
               <Bot />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">+2350</div>
-              <p className="text-xs text-muted-foreground">
+              <div className="text-2xl font-bold">
+                {averageBotResponseTime.toLocaleString()}
+              </div>
+              {/* <p className="text-xs text-muted-foreground">
                 +180.1% from last month
-              </p>
+              </p> */}
             </CardContent>
           </Card>
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                Bot Response Rate
+                Engaged Users
               </CardTitle>
               <Activity />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">+12,234</div>
-              <p className="text-xs text-muted-foreground">
+              <div className="text-2xl font-bold">
+                {engagedConversations.toLocaleString()}
+              </div>
+              {/* <p className="text-xs text-muted-foreground">
                 +19% from last month
-              </p>
+              </p> */}
             </CardContent>
           </Card>
         </div>

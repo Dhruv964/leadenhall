@@ -8,8 +8,8 @@ export async function GET(request: NextRequest) {
 
   const data1 = await databases.getDocument(
     "BLZ_Website",
-    "BLZ_Analytics",
-    "65a000373a4677871ade"
+    "blozum_dashboard_analytics",
+    "65a18edd66aba598a945"
   );
 
   return NextResponse.json(data1);
