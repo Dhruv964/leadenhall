@@ -5,8 +5,9 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Logo from "@/public/blozum.svg";
+
 export const metadata: Metadata = {
-  title: "Blozum AI",
+  title: "Login",
   description: "Authentication Page",
 };
 

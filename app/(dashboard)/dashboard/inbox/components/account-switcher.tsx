@@ -10,59 +10,51 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useCompanyStore } from "@/store/newt";
+import { HiOutlineSwitchHorizontal } from "react-icons/hi";
 
-interface AccountSwitcherProps {
-  isCollapsed: boolean;
-  accounts: {
-    label: string;
-    email: string;
-    icon: React.ReactNode;
-  }[];
-}
+export function AccountSwitcher() {
+  const { currCompany, setCurrCompany, allCompanies } = useCompanyStore();
 
-export function AccountSwitcher({
-  isCollapsed,
-  accounts,
-}: AccountSwitcherProps) {
-  const [selectedAccount, setSelectedAccount] = React.useState<string>(
-    accounts[0].email
-  );
+  const handleCompanyChange = (idx: number) => {
+    setCurrCompany(idx);
+  };
 
   return (
-    <div className="max-w-200">
-      <Select defaultValue={selectedAccount}>
-        <SelectTrigger
-          className={cn(
-            "flex items-center gap-2 [&>span]:line-clamp-1 [&>span]:flex [&>span]:w-full [&>span]:items-center [&>span]:gap-1 [&>span]:truncate [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0",
-            isCollapsed &&
-              "flex h-9 w-9 shrink-0 items-center justify-center p-0 [&>span]:w-auto [&>svg]:hidden"
-          )}
-          aria-label="Select account"
-        >
-          <SelectValue placeholder="Select an account">
-            {
-              accounts.find((account) => account.email === selectedAccount)
-                ?.icon
-            }
-            <span className={cn("ml-2", isCollapsed && "hidden")}>
-              {
-                accounts.find((account) => account.email === selectedAccount)
-                  ?.label
-              }
-            </span>
-          </SelectValue>
-        </SelectTrigger>
-        <SelectContent>
-          {accounts.map((account) => (
-            <SelectItem key={account.email} value={account.email}>
-              <div className="flex items-center gap-3 [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0 [&_svg]:text-foreground">
-                {account.icon}
-                {account.email}
-              </div>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+    <Select
+      defaultValue={allCompanies[currCompany]?.company_name}
+      onValueChange={(e: any) => {
+        handleCompanyChange(e);
+      }}
+    >
+      <SelectTrigger
+        className={cn(
+          "flex items-center gap-2 [&>span]:line-clamp-1 [&>span]:flex [&>span]:w-full [&>span]:items-center [&>span]:gap-1 [&>span]:truncate [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0",
+          true &&
+            "flex h-9 w-9 shrink-0 items-center justify-center p-0 [&>span]:w-auto [&>svg]:hidden"
+        )}
+        aria-label="Select companies"
+      >
+        <SelectValue>
+          <HiOutlineSwitchHorizontal className="w-5 h-5 text-gray-500" />
+          <span className={cn("ml-2", true && "hidden")}>
+            {/* Accessing the company name using the selected index */}
+            {allCompanies[currCompany]?.company_name}
+          </span>
+        </SelectValue>
+      </SelectTrigger>
+      <SelectContent>
+        {allCompanies.map((comp: any, idx: number) => (
+          <SelectItem key={idx} value={String(idx)}>
+            <div
+              className="flex items-center gap-3 [&_svg]:h-4 [&_svg]:w-4 [&_svg]:shrink-0 [&_svg]:text-foreground"
+              onClick={() => handleCompanyChange(idx)}
+            >
+              {comp.company_name}
+            </div>
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }

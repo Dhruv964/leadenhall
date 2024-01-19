@@ -10,8 +10,11 @@ import { getServerSession } from "next-auth";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Blozum AI",
-  description: "Dashboard",
+  title: {
+    default: "Blozum AI",
+    template: "%s - Blozum",
+  },
+  description: "Analytics",
 };
 
 export default async function RootLayout({

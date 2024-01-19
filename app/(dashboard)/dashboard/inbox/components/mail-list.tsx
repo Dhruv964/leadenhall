@@ -1,72 +1,89 @@
-import { ComponentProps } from "react";
-import formatDistanceToNow from "date-fns/formatDistanceToNow";
+"use client";
 
+import { ComponentProps, useEffect, useState } from "react";
+import formatDistanceToNow from "date-fns/formatDistanceToNow";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
-import { MailType } from "../data";
-import { useMail } from "../use-mail";
+import { useChatsStore, useCompanyStore } from "@/store/newt";
+import { useRouter } from "next/navigation";
+import { MdPerson4 } from "react-icons/md";
+import { BsRobot } from "react-icons/bs";
 
-interface MailListProps {
-  items: MailType[];
-}
+export function MailList() {
+  const { allChats, setAllChats, selectedChat, setSelectedChat } =
+    useChatsStore();
+  const { currCompany } = useCompanyStore();
 
-export function MailList({ items }: MailListProps) {
-  const [mail, setMail] = useMail();
+  const router = useRouter();
+  const [isLoading, setLoading] = useState(true);
 
-  return (
+  useEffect(() => {
+    if (allChats.length == 0) {
+      router.push("/dashboard");
+    } else {
+      setLoading(false);
+    }
+  }, [currCompany, allChats]);
+
+  return isLoading ? (
+    <div>Loading...</div>
+  ) : (
     <ScrollArea className="h-screen">
       <div className="flex flex-col gap-2 p-4 pt-0">
-        {items.map((item) => (
+        {allChats[currCompany].map((chat: any) => (
           <button
-            key={item.id}
+            key={chat["$id"]}
             className={cn(
               "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-              mail.selected === item.id && "bg-muted",
+              selectedChat === chat["$id"] && "bg-muted"
             )}
-            onClick={() =>
-              setMail({
-                ...mail,
-                selected: item.id,
-              })
-            }
+            onClick={() => setSelectedChat(chat["$id"])}
           >
             <div className="flex w-full flex-col gap-1">
               <div className="flex items-center">
                 <div className="flex items-center gap-2">
-                  <div className="font-semibold">{item.name}</div>
-                  {!item.read && (
+                  <div className="font-semibold flex items-center gap-2">
+                    <div style={{ width: "20px", height: "20px" }}>
+                      <MdPerson4 />
+                    </div>
+                    {chat["user_message"]}
+                  </div>
+                  {/* {!item.read && (
                     <span className="flex h-2 w-2 rounded-full bg-blue-600" />
-                  )}
+                  )} */}
                 </div>
                 <div
                   className={cn(
                     "ml-auto text-xs",
-                    mail.selected === item.id
+                    selectedChat === chat["$id"]
                       ? "text-foreground"
-                      : "text-muted-foreground",
+                      : "text-muted-foreground"
                   )}
                 >
-                  {formatDistanceToNow(new Date(item.date), {
+                  {formatDistanceToNow(new Date(chat["$updatedAt"]), {
                     addSuffix: true,
                   })}
                 </div>
               </div>
-              <div className="text-xs font-medium">{item.subject}</div>
             </div>
-            <div className="line-clamp-2 text-xs text-muted-foreground">
-              {item.text.substring(0, 300)}
+            <div className="flex items-center gap-2">
+              <div style={{ width: "20px", height: "20px" }}>
+                <BsRobot />
+              </div>
+              <span className="line-clamp-2 text-xs text-muted-foreground ">
+                {chat.assistant_message.substring(0, 300)}
+              </span>
             </div>
-            {item.labels.length ? (
+            {/* {chat.user_message.length ? null : (
               <div className="flex items-center gap-2">
-                {item.labels.map((label) => (
+                {chat.labels.map((label) => (
                   <Badge key={label} variant={getBadgeVariantFromLabel(label)}>
                     {label}
                   </Badge>
                 ))}
               </div>
-            ) : null}
+            )} */}
           </button>
         ))}
       </div>
@@ -75,7 +92,7 @@ export function MailList({ items }: MailListProps) {
 }
 
 function getBadgeVariantFromLabel(
-  label: string,
+  label: string
 ): ComponentProps<typeof Badge>["variant"] {
   if (["work"].includes(label.toLowerCase())) {
     return "default";

@@ -1,4 +1,5 @@
 "use client";
+
 import { CSATPie } from "@/components/CSATPie";
 import { ConversationChart } from "@/components/ConversationChart";
 import { ChatChart } from "@/components/ChatChart";
@@ -29,6 +30,23 @@ import {
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { signOut } from "next-auth/react";
+import {
+  useAnalyticsStore,
+  useChatsStore,
+  useCompanyStore,
+} from "@/store/newt";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AccountSwitcher } from "./inbox/components/account-switcher";
+
+const FormSchema = z.object({
+  email: z
+    .string({
+      required_error: "Please select an email to display.",
+    })
+    .email(),
+});
 
 export default function page() {
   const { data: session } = useSession();
@@ -45,52 +63,132 @@ export default function page() {
     useState(0);
   const [engagedConversations, setEngagedConversations] = useState(0);
 
+  //ALLOWED COMPANIES
+
+  // const [allowedCompanies, setAllowedCompanies] = useState<any>(null);
+
+  const { currCompany, setAllCompanies } = useCompanyStore();
+
+  // const { allAnalytics, setAllAnalytics } = useAnalyticsStore();
+
+  const { setAllChats } = useChatsStore();
+
   useEffect(() => {
-    async function check() {
-      const response = await fetch("api/checkPremium", {
+    async function apiOperation() {
+      setLoading(true);
+      const userResponse = await fetch("api/checkUsers", {
         method: "GET",
       });
-      const data = await response.json();
-      // console.log(data);
-      const userData = data["documents"].find(
+      const userTemp = await userResponse.json();
+      const userData = userTemp["documents"].find(
         (e: any) => e.email == session?.user?.email
       );
+
       if (userData == null) {
         console.log("logged out");
         signOut({ callbackUrl: "https://analytics.blozum.com/" });
       } else {
         setLoading(false);
-        const response = await fetch("api/analytics", {
-          method: "GET",
-        });
-        const data1 = await response.json();
 
-        const buttonClicksData = JSON.parse(data1.button_clicks);
-        const totalQuestionsData = JSON.parse(data1.total_questions);
+        //LOADING ALLOWED COMPANIES
+
+        const companies = JSON.parse(userData["allowed_companies"]);
+        // console.log(companies);
+
+        //SENDING API CALLS -> Chats and Analytics of all companies
+        const temp_all_companies = [];
+
+        const messages = [];
+
+        const analytics = [];
+
+        for (const company of companies) {
+          temp_all_companies.push(company);
+
+          const chatsResponse = await fetch("api/chats", {
+            method: "POST",
+            body: JSON.stringify({
+              databaseId: company.company_database_id,
+              collectionId: company.chat_history_collection_id,
+            }),
+          });
+
+          const chatData = await chatsResponse.json();
+
+          messages.push(chatData["documents"]);
+
+          const analyticsResponse = await fetch("api/analytics", {
+            method: "POST",
+            body: JSON.stringify({
+              databaseId: company.company_database_id,
+              collectionId: company.blozum_dashboard_analytics_collection,
+            }),
+          });
+
+          const analyticsData = await analyticsResponse.json();
+
+          analytics.push(analyticsData["documents"]);
+        }
+
+        setAllCompanies(temp_all_companies);
+
+        // console.log(messages);
+
+        setAllChats(messages);
+
+        //LOADING USER CREDENTIALS
+
+        const data1 = analytics[currCompany];
+
+        const buttonClicksData = JSON.parse(
+          data1.find((doc: any) => doc.name_of_analytics === "button_clicks")[
+            "daily_data_values"
+          ]
+        );
+
+        const totalQuestionsData = JSON.parse(
+          data1.find((doc: any) => doc.name_of_analytics === "total_questions")[
+            "daily_data_values"
+          ]
+        );
+
         const averageBotResponseTimeData = JSON.parse(
-          data1.average_bot_response_time
+          data1.find(
+            (doc: any) => doc.name_of_analytics === "avg_bot_response_time"
+          )["daily_data_values"]
         );
+
         const noOfUniqueConversationsData = JSON.parse(
-          data1.no_of_unique_conversations
+          data1.find((doc: any) => doc.name_of_analytics === "unique_users")[
+            "daily_data_values"
+          ]
         );
+
         const averageConversationDurationData = JSON.parse(
-          data1.average_conversation_duration
+          data1.find(
+            (doc: any) => doc.name_of_analytics === "avg_conversation_duration"
+          )["daily_data_values"]
         );
+
         const engagedConversationsData = JSON.parse(
-          data1.engaged_conversations
+          data1.find(
+            (doc: any) => doc.name_of_analytics === "engaged_conversations"
+          )["daily_data_values"]
         );
 
         const today = new Date();
         const yesterday = new Date(today);
-        // yesterday.setDate(today.getDate() - 1);
-        yesterday.setDate(today.getDate());
+        yesterday.setDate(today.getDate() - 1);
+        // yesterday.setDate(today.getDate());
 
         const month = yesterday.getMonth() + 1;
         const formattedMonth = month < 10 ? `0${month}` : month;
 
         const formattedYesterday = `${yesterday.getDate()}-${formattedMonth}-${yesterday.getFullYear()}`;
 
-        setButtonClicks(buttonClicksData[formattedYesterday] || 0);
+        setButtonClicks(
+          buttonClicksData[formattedYesterday]["total_button_clicks"] || 0
+        );
         setTotalQuestions(totalQuestionsData[formattedYesterday] || 0);
         setAverageBotResponseTime(
           averageBotResponseTimeData[formattedYesterday] || 0
@@ -105,13 +203,12 @@ export default function page() {
           engagedConversationsData[formattedYesterday] || 0
         );
 
-        console.log(data1);
         console.log("login success");
       }
     }
 
-    check();
-  }, [session]);
+    apiOperation();
+  }, [session, currCompany]);
 
   return loading ? (
     <div className="flex items-center justify-center h-full">
@@ -124,19 +221,7 @@ export default function page() {
           <h2 className="text-3xl font-bold tracking-tight">
             Hi, Welcome back {session!.user?.name?.split(" ")[0]}
           </h2>
-          <div className="hidden md:flex items-center space-x-2">
-            <Select defaultValue={"itc"}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a verified email to display" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="itc">ITC</SelectItem>
-                <SelectItem value="company1">company1</SelectItem>
-                <SelectItem value="company2">company2</SelectItem>
-                <SelectItem value="company3">company3</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <AccountSwitcher />
         </div>
         <div className=""></div>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

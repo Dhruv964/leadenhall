@@ -1,5 +1,5 @@
 "use client";
-import * as React from "react";
+import { useEffect, useState } from "react";
 import {
   AlertCircle,
   Archive,
@@ -33,11 +33,11 @@ import {
 } from "@/components/ui/resizable";
 
 interface MailProps {
-  accounts: {
-    label: string;
-    email: string;
-    icon: React.ReactNode;
-  }[];
+  // accounts: {
+  //   label: string;
+  //   email: string;
+  //   icon: React.ReactNode;
+  // }[];
   mails: MailType[];
   defaultLayout: number[] | undefined;
   defaultCollapsed?: boolean;
@@ -45,14 +45,14 @@ interface MailProps {
 }
 
 export function Mail({
-  accounts,
+  // accounts,
   mails,
   defaultLayout = [5.5, 440, 655],
   defaultCollapsed = true,
   navCollapsedSize,
 }: MailProps) {
-  const [isCollapsed, setIsCollapsed] = React.useState(defaultCollapsed);
-  const [mail] = useMail();
+  const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
+  // const [mail] = useMail();
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -81,7 +81,7 @@ export function Mail({
               isCollapsed ? "h-[52px]" : "px-2"
             )}
           >
-            <AccountSwitcher isCollapsed={isCollapsed} accounts={accounts} />
+            <AccountSwitcher />
           </div>
           <Separator />
           <Nav
@@ -172,7 +172,7 @@ export function Mail({
                   value="all"
                   className="text-zinc-600 dark:text-zinc-200"
                 >
-                  All mail
+                  All Messages
                 </TabsTrigger>
                 <TabsTrigger
                   value="unread"
@@ -192,18 +192,19 @@ export function Mail({
               </form>
             </div>
             <TabsContent value="all" className="m-0">
-              <MailList items={mails} />
+              <MailList />
             </TabsContent>
-            <TabsContent value="unread" className="m-0">
-              <MailList items={mails.filter((item) => !item.read)} />
+            <TabsContent
+              value="unread"
+              className="text-center text-muted-foreground"
+            >
+              Empty
             </TabsContent>
           </Tabs>
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[2]}>
-          <MailDisplay
-            mail={mails.find((item) => item.id === mail.selected) || null}
-          />
+          <MailDisplay />
         </ResizablePanel>
       </ResizablePanelGroup>
     </TooltipProvider>
