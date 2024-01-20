@@ -13,13 +13,6 @@ import {
 } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   MessageCircle,
   HelpCircle,
   Users,
@@ -35,19 +28,8 @@ import {
   useChatsStore,
   useCompanyStore,
 } from "@/store/newt";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { AccountSwitcher } from "./inbox/components/account-switcher";
 import { Skeleton } from "@/components/ui/skeleton";
-
-const FormSchema = z.object({
-  email: z
-    .string({
-      required_error: "Please select an email to display.",
-    })
-    .email(),
-});
 
 export default function page() {
   const { data: session } = useSession();
@@ -70,7 +52,7 @@ export default function page() {
 
   const { currCompany, setAllCompanies } = useCompanyStore();
 
-  // const { allAnalytics, setAllAnalytics } = useAnalyticsStore();
+  const { allAnalytics, setAllAnalytics } = useAnalyticsStore();
 
   const { setAllChats } = useChatsStore();
 
@@ -132,6 +114,8 @@ export default function page() {
 
         // console.log(messages);
 
+        setAllAnalytics(analytics);
+
         setAllChats(messages);
 
         //LOADING USER CREDENTIALS
@@ -176,8 +160,8 @@ export default function page() {
 
         const today = new Date();
         const yesterday = new Date(today);
-        yesterday.setDate(today.getDate() - 1);
-        // yesterday.setDate(today.getDate());
+        // yesterday.setDate(today.getDate() - 1);
+        yesterday.setDate(today.getDate());
 
         const month = yesterday.getMonth() + 1;
         const formattedMonth = month < 10 ? `0${month}` : month;
@@ -209,11 +193,7 @@ export default function page() {
   }, [session, currCompany]);
 
   return loading ? (
-    // <div className="flex items-center justify-center h-full">
-    //   Loading Final Bit of Information...
-    // </div>
     <div className="flex items-center justify-center h-full">
-      {/* <Skeleton className="h-12 w-12 rounded-full" /> */}
       <div className="space-y-2">
         <Skeleton className="h-full w-full p-4 m-2 bg-secondary">
           Loading Information...
