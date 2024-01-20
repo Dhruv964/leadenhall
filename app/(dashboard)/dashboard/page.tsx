@@ -39,6 +39,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AccountSwitcher } from "./inbox/components/account-switcher";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const FormSchema = z.object({
   email: z
@@ -87,8 +88,6 @@ export default function page() {
       if (userData == null) {
         signOut({ callbackUrl: "https://analytics.blozum.com/" });
       } else {
-        setLoading(false);
-
         //LOADING ALLOWED COMPANIES
 
         const companies = JSON.parse(userData["allowed_companies"]);
@@ -202,7 +201,7 @@ export default function page() {
           engagedConversationsData[formattedYesterday] || 0
         );
 
-        console.log("login success");
+        setLoading(false);
       }
     }
 
@@ -210,8 +209,16 @@ export default function page() {
   }, [session, currCompany]);
 
   return loading ? (
+    // <div className="flex items-center justify-center h-full">
+    //   Loading Final Bit of Information...
+    // </div>
     <div className="flex items-center justify-center h-full">
-      Loading Final Bit of Information...
+      {/* <Skeleton className="h-12 w-12 rounded-full" /> */}
+      <div className="space-y-2">
+        <Skeleton className="h-full w-full p-4 m-2 bg-secondary">
+          Loading Information...
+        </Skeleton>
+      </div>
     </div>
   ) : (
     <ScrollArea className="h-full">
