@@ -85,7 +85,6 @@ export default function page() {
       );
 
       if (userData == null) {
-        console.log("logged out");
         signOut({ callbackUrl: "https://analytics.blozum.com/" });
       } else {
         setLoading(false);
