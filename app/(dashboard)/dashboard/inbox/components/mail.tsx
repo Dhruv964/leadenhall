@@ -31,6 +31,9 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import { Button } from "@/components/ui/button";
+import { IoIosRefresh } from "react-icons/io";
+import { useRouter } from "next/navigation";
 
 interface MailProps {
   // accounts: {
@@ -38,7 +41,7 @@ interface MailProps {
   //   email: string;
   //   icon: React.ReactNode;
   // }[];
-  mails: MailType[];
+  // mails: MailType[];
   defaultLayout: number[] | undefined;
   defaultCollapsed?: boolean;
   navCollapsedSize: number;
@@ -46,13 +49,15 @@ interface MailProps {
 
 export function Mail({
   // accounts,
-  mails,
+  // mails,
   defaultLayout = [5.5, 440, 655],
   defaultCollapsed = true,
   navCollapsedSize,
 }: MailProps) {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
   // const [mail] = useMail();
+
+  const router = useRouter();
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -65,7 +70,7 @@ export function Mail({
         }}
         className="h-full max-h-[800px] items-stretch"
       >
-        <ResizablePanel
+        {/* <ResizablePanel
           defaultSize={defaultLayout[0]}
           collapsedSize={navCollapsedSize}
           collapsible={true}
@@ -81,7 +86,7 @@ export function Mail({
               isCollapsed ? "h-[52px]" : "px-2"
             )}
           >
-            <AccountSwitcher />
+            
           </div>
           <Separator />
           <Nav
@@ -162,12 +167,21 @@ export function Mail({
             ]}
           />
         </ResizablePanel>
-        <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-          <Tabs defaultValue="all">
-            <div className="flex items-center px-4 py-2">
-              <h1 className="text-xl font-bold">Inbox</h1>
-              <TabsList className="ml-auto">
+        <ResizableHandle withHandle /> */}
+        <ResizablePanel defaultSize={defaultLayout[0]} minSize={30}>
+          {/* <Tabs defaultValue="all"> */}
+          <div className="flex items-center px-4 py-2">
+            <h1 className="text-xl font-bold">Inbox</h1>
+            <div
+              className="ml-3 cursor-pointer"
+              onClick={() => router.push("/dashboard")}
+            >
+              <IoIosRefresh />
+            </div>
+            <div className="ml-auto">
+              <AccountSwitcher />
+            </div>
+            {/* <TabsList className="ml-auto">
                 <TabsTrigger
                   value="all"
                   className="text-zinc-600 dark:text-zinc-200"
@@ -180,31 +194,33 @@ export function Mail({
                 >
                   Unread
                 </TabsTrigger>
-              </TabsList>
-            </div>
-            <Separator />
-            <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+              </TabsList> */}
+          </div>
+          <Separator />
+          {/* <div className="bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60">
               <form>
                 <div className="relative">
                   <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                   <Input placeholder="Search" className="pl-8" />
                 </div>
               </form>
-            </div>
-            <TabsContent value="all" className="m-0">
-              <MailList />
+            </div> */}
+          <MailList />
+          {/* <TabsContent value="all" className="m-0">
             </TabsContent>
             <TabsContent
               value="unread"
               className="text-center text-muted-foreground"
             >
               Empty
-            </TabsContent>
-          </Tabs>
+            </TabsContent> */}
+          {/* </Tabs> */}
         </ResizablePanel>
         <ResizableHandle withHandle />
-        <ResizablePanel defaultSize={defaultLayout[2]}>
-          <MailDisplay />
+        <ResizablePanel defaultSize={defaultLayout[1]}>
+          <div className="max-w-6xl">
+            <MailDisplay />
+          </div>
         </ResizablePanel>
       </ResizablePanelGroup>
     </TooltipProvider>

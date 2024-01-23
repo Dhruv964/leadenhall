@@ -22,6 +22,7 @@ export function MailList() {
     if (allChats.length == 0) {
       router.push("/dashboard");
     } else {
+      console.log(allChats[currCompany][0]);
       setLoading(false);
     }
   }, [currCompany, allChats]);
@@ -29,16 +30,16 @@ export function MailList() {
   return isLoading ? (
     <div>Loading...</div>
   ) : (
-    <ScrollArea className="h-screen">
+    <ScrollArea className="h-screen mt-5">
       <div className="flex flex-col gap-2 p-4 pt-0">
-        {allChats[currCompany].map((chat: any) => (
+        {allChats[currCompany].map((user: any, idx: number) => (
           <button
-            key={chat["$id"]}
+            key={user[0]["$id"]}
             className={cn(
               "flex flex-col items-start gap-2 rounded-lg border p-3 text-left text-sm transition-all hover:bg-accent",
-              selectedChat === chat["$id"] && "bg-muted"
+              selectedChat === idx && "bg-muted"
             )}
-            onClick={() => setSelectedChat(chat["$id"])}
+            onClick={() => setSelectedChat(idx)}
           >
             <div className="flex w-full flex-col gap-1">
               <div className="flex items-center">
@@ -47,7 +48,7 @@ export function MailList() {
                     <div style={{ width: "20px", height: "20px" }}>
                       <MdPerson4 />
                     </div>
-                    {chat["user_message"]}
+                    {user[0]["user_message"]}
                   </div>
                   {/* {!item.read && (
                     <span className="flex h-2 w-2 rounded-full bg-blue-600" />
@@ -56,12 +57,12 @@ export function MailList() {
                 <div
                   className={cn(
                     "ml-auto text-xs",
-                    selectedChat === chat["$id"]
+                    selectedChat === user[0]["$id"]
                       ? "text-foreground"
                       : "text-muted-foreground"
                   )}
                 >
-                  {formatDistanceToNow(new Date(chat["$updatedAt"]), {
+                  {formatDistanceToNow(new Date(user[0]["$updatedAt"]), {
                     addSuffix: true,
                   })}
                 </div>
@@ -72,7 +73,7 @@ export function MailList() {
                 <BsRobot />
               </div>
               <span className="line-clamp-2 text-xs text-muted-foreground ">
-                {chat.assistant_message.substring(0, 300)}
+                {user[0].assistant_message.substring(0, 300)}
               </span>
             </div>
             {/* {chat.user_message.length ? null : (

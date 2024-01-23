@@ -26,7 +26,7 @@ export const useAnalyticsStore = create<AnalyticsStore>((set) => ({
 
 interface ChatsStore {
   allChats: any;
-  selectedChat: Number;
+  selectedChat: any;
   setAllChats: (allChats: any) => void;
   setSelectedChat: (selectedChat: any) => void;
 }

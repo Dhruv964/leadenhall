@@ -70,7 +70,7 @@ export default function page() {
       if (userData == null) {
         signOut({ callbackUrl: "https://analytics.blozum.com/" });
       } else {
-        //LOADING ALLOWED COMPANIES
+        // LOADING ALLOWED COMPANIES
 
         const companies = JSON.parse(userData["allowed_companies"]);
         // console.log(companies);
@@ -110,13 +110,31 @@ export default function page() {
           analytics.push(analyticsData["documents"]);
         }
 
-        setAllCompanies(temp_all_companies);
+        const finalMessages: any = [];
 
-        // console.log(messages);
+        messages.forEach((messageSet) => {
+          const combinedMessages: any = {};
+          messageSet.forEach((message: any) => {
+            const { user_id } = message;
+
+            if (!combinedMessages[user_id]) {
+              combinedMessages[user_id] = [];
+            }
+
+            combinedMessages[user_id].push(message);
+          });
+          finalMessages.push(Object.values(combinedMessages));
+        });
+
+        // console.log(finalMessages);
+
+        setAllCompanies(temp_all_companies);
 
         setAllAnalytics(analytics);
 
-        setAllChats(messages);
+        setAllChats(finalMessages);
+
+        // console.log(messages);
 
         //LOADING USER CREDENTIALS
 

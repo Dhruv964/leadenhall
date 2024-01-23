@@ -42,7 +42,7 @@ import {
 } from "@/components/ui/tooltip";
 import { MailType as Mail } from "../data";
 import { CardsChat } from "@/components/chat";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useChatsStore, useCompanyStore } from "@/store/newt";
 import {
   Card,
@@ -53,6 +53,8 @@ import {
 import { MdPerson4 } from "react-icons/md";
 import { BsRobot } from "react-icons/bs";
 import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
+import React from "react";
 
 export function MailDisplay() {
   const today = new Date();
@@ -65,14 +67,31 @@ export function MailDisplay() {
     router.push("/dashbboard");
   }
 
-  const chat = allChats[currCompany].find(
-    (chat: any) => chat["$id"] === selectedChat
-  );
-
-  const companyName = allCompanies[currCompany]["company_name"];
+  const [messages, setMessages] = useState<any>([]);
+  const [date, setDate] = useState("");
+  const [companyName, setCompanyName] = useState("");
 
   useEffect(() => {
-    console.log(chat);
+    try {
+      const data = allChats[currCompany][selectedChat];
+      if (data.length === 0) {
+        router.push("/dashboard");
+      } else {
+        const temp = [];
+        for (const message of data) {
+          temp.push({ role: "agent", content: message["assistant_message"] });
+          temp.push({ role: "user", content: message["user_message"] });
+          setDate(
+            format(new Date(message["$createdAt"]), "MMMM dd, yyyy HH:mm:ss")
+          );
+        }
+        setCompanyName(allCompanies[currCompany]["company_name"]);
+        setMessages(temp.reverse());
+      }
+      console.log(messages);
+    } catch (e) {
+      router.push("/dashboard");
+    }
   }, [currCompany, selectedChat, allChats]);
 
   return (
@@ -213,13 +232,13 @@ export function MailDisplay() {
         </DropdownMenu>
       </div>
       <Separator />
-      {chat ? (
+      {messages ? (
         <Card className="h-full">
           <CardHeader className="flex flex-row items-center content-between">
             <div className="flex items-center space-x-6">
               <Avatar>
                 <AvatarImage src="/avatars/01.png" alt="Image" />
-                <AvatarFallback>{companyName.substring(0, 2)}</AvatarFallback>
+                <AvatarFallback>{companyName!.substring(0, 2)}</AvatarFallback>
               </Avatar>
               <div>
                 <p className="text-sm font-medium leading-none">
@@ -229,9 +248,7 @@ export function MailDisplay() {
                   Customer Questionnaire
                 </p>
               </div>
-              <div className="text-sm text-muted-foreground pl-5">
-                {format(new Date(chat["$createdAt"]), "MMMM dd, yyyy HH:mm:ss")}
-              </div>
+              <div className="text-sm text-muted-foreground pl-5">{date}</div>
             </div>
 
             {/* <TooltipProvider delayDuration={0}>
@@ -253,19 +270,42 @@ export function MailDisplay() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {/* <div className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm bg-muted ml-auto overflow word-wrap">
-                {chat["user_message"]}
-              </div> */}
-
-              <div className="flex-end w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm bg-muted">
-                {chat["user_message"]}
-              </div>
-
-              <div className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm bg-primary text-primary-foreground">
-                {chat["assistant_message"]}
-              </div>
+              {messages.map((message: any, index: number) => (
+                <div
+                  key={index}
+                  className={cn(
+                    "flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm",
+                    message.role === "agent"
+                      ? "bg-primary text-primary-foreground"
+                      : "ml-auto bg-muted"
+                  )}
+                >
+                  {message.content}
+                </div>
+              ))}
             </div>
           </CardContent>
+          {/* <CardContent>
+            <div className="space-y-4">
+              {messages.map((message: any, index: number) => {
+                <div className="p-1">
+                  hi
+                  {/* <div className="text-sm text-muted-foreground pl-5">
+                    {format(
+                      new Date(message["$createdAt"]),
+                      "MMMM dd, yyyy HH:mm:ss"
+                    )}
+                  </div>
+                  <div className="flex-end w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm bg-muted">
+                    {message["user_message"]}
+                  </div>
+                  <div className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm bg-primary text-primary-foreground">
+                    {message["assistant_message"]}
+                  </div> 
+                </div>;
+              })}
+            </div>
+          </CardContent> */}
           <CardFooter></CardFooter>
         </Card>
       ) : (

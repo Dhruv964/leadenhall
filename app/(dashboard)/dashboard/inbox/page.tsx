@@ -1,7 +1,7 @@
 "use client";
 import { Mail } from "./components/mail";
-import { mails } from "./data";
-import { Metadata } from "next";
+// import { mails } from "./data";
+// import { Metadata } from "next";
 import { useCompanyStore } from "@/store/newt";
 import { useRouter } from "next/navigation";
 
@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 // };
 
 export default function MailPage() {
-  const defaultLayout = [5, 47.25, 47.25]; // layout ? JSON.parse(layout.value) : undefined;
+  const defaultLayout = [40, 60]; // layout ? JSON.parse(layout.value) : undefined;
   const defaultCollapsed = true;
 
   const router = useRouter();
@@ -29,7 +29,7 @@ export default function MailPage() {
       <div className="flex-col flex">
         <Mail
           // accounts={accounts}
-          mails={mails}
+          // mails={mails}
           defaultLayout={defaultLayout}
           defaultCollapsed={defaultCollapsed}
           navCollapsedSize={4}
