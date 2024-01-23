@@ -1,5 +1,8 @@
 "use client";
 
+import { useAnalyticsStore, useCompanyStore } from "@/store/newt";
+import { format } from "date-fns";
+import { useEffect, useState } from "react";
 import {
   LineChart,
   Line,
@@ -11,38 +14,26 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  {
-    name: "Page A",
-    Conversations: 2400,
-  },
-  {
-    name: "Page B",
-    Conversations: 1398,
-  },
-  {
-    name: "Page C",
-    Conversations: 9800,
-  },
-  {
-    name: "Page D",
-    Conversations: 3908,
-  },
-  {
-    name: "Page E",
-    Conversations: 4800,
-  },
-  {
-    name: "Page F",
-    Conversations: 3800,
-  },
-  {
-    name: "Page G",
-    Conversations: 4300,
-  },
-];
-
-export function ConversationChart() {
+export function LineChart1() {
+  const { allAnalytics } = useAnalyticsStore();
+  const { currCompany } = useCompanyStore();
+  const [data, setData] = useState<any>([]);
+  useEffect(() => {
+    const allDayData = JSON.parse(
+      allAnalytics[currCompany].find(
+        (e: any) => e.name_of_analytics === "total_questions"
+      )["daily_data_values"]
+    );
+    const temp = [];
+    for (const day in allDayData) {
+      temp.push({
+        name: day.substring(0, 5).replace("-", "/"),
+        Conversations: allDayData[day],
+      });
+    }
+    setData(temp);
+    // console.log(allAnalytics[currCompany]);
+  }, [allAnalytics]);
   return (
     <ResponsiveContainer width="100%" height={350}>
       <LineChart

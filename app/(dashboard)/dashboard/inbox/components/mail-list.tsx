@@ -22,7 +22,6 @@ export function MailList() {
     if (allChats.length == 0) {
       router.push("/dashboard");
     } else {
-      console.log(allChats[currCompany][0]);
       setLoading(false);
     }
   }, [currCompany, allChats]);

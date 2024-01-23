@@ -1,7 +1,7 @@
 "use client";
 
-import { CSATPie } from "@/components/CSATPie";
-import { ConversationChart } from "@/components/ConversationChart";
+import { PieChart1 } from "@/components/PieChart1";
+import { LineChart1 } from "@/components/LineChart1";
 import { ChatChart } from "@/components/ChatChart";
 import { Overview } from "@/components/overview";
 import {
@@ -30,6 +30,7 @@ import {
 } from "@/store/newt";
 import { AccountSwitcher } from "./inbox/components/account-switcher";
 import { Skeleton } from "@/components/ui/skeleton";
+import { PieChart2 } from "@/components/PieChart2";
 
 export default function page() {
   const { data: session } = useSession();
@@ -45,10 +46,6 @@ export default function page() {
   const [averageConversationDuration, setAverageConversationDuration] =
     useState(0);
   const [engagedConversations, setEngagedConversations] = useState(0);
-
-  //ALLOWED COMPANIES
-
-  // const [allowedCompanies, setAllowedCompanies] = useState<any>(null);
 
   const { currCompany, setAllCompanies } = useCompanyStore();
 
@@ -178,8 +175,8 @@ export default function page() {
 
         const today = new Date();
         const yesterday = new Date(today);
-        // yesterday.setDate(today.getDate() - 1);
-        yesterday.setDate(today.getDate());
+        yesterday.setDate(today.getDate() - 1);
+        // yesterday.setDate(today.getDate());
 
         const month = yesterday.getMonth() + 1;
         const formattedMonth = month < 10 ? `0${month}` : month;
@@ -231,7 +228,9 @@ export default function page() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Total Unique Users
+              </CardTitle>
               <Users />
             </CardHeader>
             <CardContent>
@@ -325,26 +324,27 @@ export default function page() {
           </Card>
         </div>
 
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
-          <Card className="col-span-4">
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+          <Card className="col-span-2">
             <CardHeader>
-              <CardTitle>Average Conversations Per Day</CardTitle>
+              <CardTitle>Conversations Per Day</CardTitle>
             </CardHeader>
             <CardContent className="pl-2">
-              <ConversationChart />
+              <LineChart1 />
             </CardContent>
           </Card>
-          <Card className="col-span-4 md:col-span-3">
+          <Card className="col-span-2 ">
             <CardHeader>
-              <CardTitle>Button Clicks</CardTitle>
+              <CardTitle>Button Clicks Share</CardTitle>
+              <CardDescription>% Share of all Button Clicks</CardDescription>
             </CardHeader>
-            <CardContent className="pl-2">
-              <Overview />
+            <CardContent>
+              <PieChart2 />
             </CardContent>
           </Card>
         </div>
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-8">
-          <Card className="col-span-2 md:col-span-4 ">
+        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+          <Card className="col-span-2 ">
             <CardHeader>
               <CardTitle>CSAT</CardTitle>
               <CardDescription>
@@ -352,10 +352,10 @@ export default function page() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <CSATPie />
+              <PieChart1 />
             </CardContent>
           </Card>
-          <Card className="col-span-2 md:col-span-4 ">
+          <Card className="col-span-2">
             <CardHeader>
               <CardTitle>Recent Chats</CardTitle>
               <CardDescription>
@@ -363,7 +363,7 @@ export default function page() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ChatChart />
+              <Overview />
             </CardContent>
           </Card>
         </div>
