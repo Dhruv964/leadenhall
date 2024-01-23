@@ -67,7 +67,6 @@ export function PieChart2() {
         (e: any) => e.name_of_analytics === "button_clicks"
       )["daily_data_values"]
     );
-    console.log(allDayData);
     let temp;
     for (const day in allDayData) {
       temp = [];

@@ -24,7 +24,6 @@ export default async (req, res) => {
       [Query.equal("user_email", [user_email])]
     );
 
-    console.log();
 
     if (documents.documents.length === 0) {
       // Document not found, return error

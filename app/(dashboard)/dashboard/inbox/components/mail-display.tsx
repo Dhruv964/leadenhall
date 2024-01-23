@@ -41,7 +41,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { MailType as Mail } from "../data";
-import { CardsChat } from "@/components/chat";
 import { useEffect, useState } from "react";
 import { useChatsStore, useCompanyStore } from "@/store/newt";
 import {
@@ -88,7 +87,6 @@ export function MailDisplay() {
         setCompanyName(allCompanies[currCompany]["company_name"]);
         setMessages(temp.reverse());
       }
-      console.log(messages);
     } catch (e) {
       router.push("/dashboard");
     }
