@@ -74,8 +74,24 @@ export function MailDisplay() {
       } else {
         const temp = [];
         for (const message of data) {
-          temp.push({ role: "agent", content: message["assistant_message"] });
-          temp.push({ role: "user", content: message["user_message"] });
+          const dateObject = new Date(message["$createdAt"]);
+          const hours = dateObject.getHours();
+          const minutes = dateObject.getMinutes();
+          // Format the result as HH:mm
+          const formattedTime = `${hours < 10 ? "0" : ""}${hours}:${
+            minutes < 10 ? "0" : ""
+          }${minutes}`;
+          console.log(message);
+          temp.push({
+            role: "agent",
+            content: message["assistant_message"],
+            time: formattedTime,
+          });
+          temp.push({
+            role: "user",
+            content: message["user_message"],
+            time: formattedTime,
+          });
           setDate(
             format(new Date(message["$createdAt"]), "MMMM dd, yyyy HH:mm:ss")
           );
@@ -276,6 +292,16 @@ export function MailDisplay() {
                 >
                   {message.role === "agent" ? <BsRobot /> : <MdPerson4 />}
                   {message.content}
+                  <div
+                    className={cn(
+                      "text-sm",
+                      message.role === "agent"
+                        ? "text-gray-600"
+                        : "text-muted-foreground"
+                    )}
+                  >
+                    {message.time}
+                  </div>
                 </div>
               ))}
             </div>
