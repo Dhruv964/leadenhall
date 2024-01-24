@@ -1,6 +1,5 @@
 "use client";
 import { Mail } from "./components/mail";
-// import { mails } from "./data";
 // import { Metadata } from "next";
 import { useCompanyStore } from "@/store/newt";
 import { useRouter } from "next/navigation";

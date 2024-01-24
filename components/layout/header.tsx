@@ -6,7 +6,6 @@ import { UserNav } from "./user-nav";
 import Link from "next/link";
 import Logo from "@/public/blozum.svg";
 import Image from "next/image";
-import CalendlyButton from "../CalendlyWidget";
 
 export default function Header() {
   return (

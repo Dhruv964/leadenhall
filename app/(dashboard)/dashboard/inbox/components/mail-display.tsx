@@ -40,7 +40,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { MailType as Mail } from "../data";
 import { useEffect, useState } from "react";
 import { useChatsStore, useCompanyStore } from "@/store/newt";
 import {
