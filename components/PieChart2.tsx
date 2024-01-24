@@ -88,7 +88,7 @@ export function PieChart2() {
           cy="50%"
           labelLine={false}
           label={renderCustomizedLabel}
-          innerRadius={100}
+          innerRadius={80}
           outerRadius={150}
           fill="#22c55e"
           dataKey="value"

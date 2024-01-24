@@ -124,10 +124,10 @@ export const navItems: NavItem[] = [
     icon: "inbox",
     label: "inbox",
   },
-  {
-    title: "Message Templates",
-    href: "/dashboard/msg_templates",
-    icon: "template",
-    label: "template",
-  },
+  // {
+  //   title: "Message Templates",
+  //   href: "/dashboard/msg_templates",
+  //   icon: "template",
+  //   label: "template",
+  // },
 ];

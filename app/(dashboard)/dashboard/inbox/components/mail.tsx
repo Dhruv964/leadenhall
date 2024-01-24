@@ -218,9 +218,7 @@ export function Mail({
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel defaultSize={defaultLayout[1]}>
-          <div className="max-w-6xl">
             <MailDisplay />
-          </div>
         </ResizablePanel>
       </ResizablePanelGroup>
     </TooltipProvider>

@@ -63,8 +63,6 @@ export default function page() {
         (e: any) => e.email == session?.user?.email
       );
 
-      console.log("stop1");
-
       if (userData == null) {
         signOut({ callbackUrl: "https://analytics.blozum.com/" });
       } else {
@@ -122,8 +120,6 @@ export default function page() {
           });
           finalMessages.push(Object.values(combinedMessages));
         });
-
-        console.log("stop2");
 
         // console.log(finalMessages);
 
@@ -203,8 +199,6 @@ export default function page() {
         setEngagedConversations(
           engagedConversationsData[formattedYesterday] || 0
         );
-
-        console.log("stop3");
 
         setLoading(false);
       }

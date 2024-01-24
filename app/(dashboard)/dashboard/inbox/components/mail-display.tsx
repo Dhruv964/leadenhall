@@ -25,15 +25,12 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Tooltip,
   TooltipContent,
@@ -274,9 +271,10 @@ export function MailDisplay() {
                     "flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm",
                     message.role === "agent"
                       ? "bg-primary text-primary-foreground"
-                      : "ml-auto bg-muted"
+                      : "bg-muted"
                   )}
                 >
+                  {message.role === "agent" ? <BsRobot /> : <MdPerson4 />}
                   {message.content}
                 </div>
               ))}
