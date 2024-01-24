@@ -21,7 +21,7 @@ import {
   Activity,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { signOut } from "next-auth/react";
 import {
   useAnalyticsStore,
@@ -47,10 +47,9 @@ export default function page() {
     useState(0);
   const [engagedConversations, setEngagedConversations] = useState(0);
 
+  //STORES
   const { currCompany, setAllCompanies } = useCompanyStore();
-
   const { allAnalytics, setAllAnalytics } = useAnalyticsStore();
-
   const { setAllChats } = useChatsStore();
 
   useEffect(() => {
@@ -64,13 +63,14 @@ export default function page() {
         (e: any) => e.email == session?.user?.email
       );
 
+      console.log("stop1");
+
       if (userData == null) {
         signOut({ callbackUrl: "https://analytics.blozum.com/" });
       } else {
         // LOADING ALLOWED COMPANIES
 
         const companies = JSON.parse(userData["allowed_companies"]);
-        // console.log(companies);
 
         //SENDING API CALLS -> Chats and Analytics of all companies
         const temp_all_companies = [];
@@ -123,6 +123,8 @@ export default function page() {
           finalMessages.push(Object.values(combinedMessages));
         });
 
+        console.log("stop2");
+
         // console.log(finalMessages);
 
         setAllCompanies(temp_all_companies);
@@ -134,6 +136,8 @@ export default function page() {
         // console.log(messages);
 
         //LOADING USER CREDENTIALS
+
+        // console.log(allAnalytics);
 
         const data1 = analytics[currCompany];
 
@@ -200,12 +204,14 @@ export default function page() {
           engagedConversationsData[formattedYesterday] || 0
         );
 
+        console.log("stop3");
+
         setLoading(false);
       }
     }
 
     apiOperation();
-  }, [session, currCompany]);
+  }, [currCompany]);
 
   return loading ? (
     <div className="flex items-center justify-center h-full">
