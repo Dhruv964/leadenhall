@@ -175,8 +175,8 @@ export default function page() {
 
         const today = new Date();
         const yesterday = new Date(today);
-        yesterday.setDate(today.getDate() - 1);
-        // yesterday.setDate(today.getDate());
+        // yesterday.setDate(today.getDate() - 1);
+        yesterday.setDate(today.getDate());
 
         const month = yesterday.getMonth() + 1;
         const formattedMonth = month < 10 ? `0${month}` : month;

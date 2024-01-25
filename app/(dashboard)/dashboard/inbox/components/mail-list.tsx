@@ -55,7 +55,7 @@ export function MailList() {
                 </div>
                 <div
                   className={cn(
-                    "ml-auto text-xs",
+                    "ml-auto text-xs hidden md:block",
                     selectedChat === user[0]["$id"]
                       ? "text-foreground"
                       : "text-muted-foreground"

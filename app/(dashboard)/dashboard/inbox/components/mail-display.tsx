@@ -50,6 +50,7 @@ import { BsRobot } from "react-icons/bs";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import React from "react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function MailDisplay() {
   const today = new Date();
@@ -242,26 +243,30 @@ export function MailDisplay() {
         </DropdownMenu>
       </div>
       <Separator />
-      {messages ? (
-        <Card className="h-full">
-          <CardHeader className="flex flex-row items-center content-between">
-            <div className="flex items-center space-x-6">
-              <Avatar>
-                <AvatarImage src="/avatars/01.png" alt="Image" />
-                <AvatarFallback>{companyName!.substring(0, 2)}</AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="text-sm font-medium leading-none">
-                  {companyName}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Customer Questionnaire
-                </p>
-              </div>
-              <div className="text-sm text-muted-foreground pl-5">{date}</div>
-            </div>
 
-            {/* <TooltipProvider delayDuration={0}>
+      {messages ? (
+        <ScrollArea className="h-screen">
+          <Card className="h-full mb-[200px] bg-transparent border-none">
+            <CardHeader className="flex flex-row items-center content-between">
+              <div className="flex items-center space-x-6">
+                <Avatar>
+                  <AvatarImage src="/avatars/01.png" alt="Image" />
+                  <AvatarFallback>
+                    {companyName!.substring(0, 2)}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="text-sm font-medium leading-none">
+                    {companyName}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    Customer Questionnaire
+                  </p>
+                </div>
+                <div className="text-sm text-muted-foreground pl-5">{date}</div>
+              </div>
+
+              {/* <TooltipProvider delayDuration={0}>
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
@@ -277,36 +282,36 @@ export function MailDisplay() {
                 <TooltipContent sideOffset={10}>New message</TooltipContent>
               </Tooltip>
             </TooltipProvider> */}
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {messages.map((message: any, index: number) => (
-                <div
-                  key={index}
-                  className={cn(
-                    "flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm",
-                    message.role === "agent"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted"
-                  )}
-                >
-                  {message.role === "agent" ? <BsRobot /> : <MdPerson4 />}
-                  {message.content}
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {messages.map((message: any, index: number) => (
                   <div
+                    key={index}
                     className={cn(
-                      "text-sm",
+                      "flex w-max flex-col gap-2 rounded-lg px-3 py-2 text-sm max-w-md md:max-w-xl text-wrap",
                       message.role === "agent"
-                        ? "text-gray-600"
-                        : "text-muted-foreground"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted"
                     )}
                   >
-                    {message.time}
+                    {message.role === "agent" ? <BsRobot /> : <MdPerson4 />}
+                    {message.content}
+                    <div
+                      className={cn(
+                        "text-sm",
+                        message.role === "agent"
+                          ? "text-gray-600"
+                          : "text-muted-foreground"
+                      )}
+                    >
+                      {message.time}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-          {/* <CardContent>
+                ))}
+              </div>
+            </CardContent>
+            {/* <CardContent>
             <div className="space-y-4">
               {messages.map((message: any, index: number) => {
                 <div className="p-1">
@@ -327,8 +332,9 @@ export function MailDisplay() {
               })}
             </div>
           </CardContent> */}
-          <CardFooter></CardFooter>
-        </Card>
+            <CardFooter></CardFooter>
+          </Card>
+        </ScrollArea>
       ) : (
         <div className="p-8 text-center text-muted-foreground">
           No message selected
