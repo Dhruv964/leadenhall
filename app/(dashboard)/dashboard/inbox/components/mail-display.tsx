@@ -78,7 +78,7 @@ export function MailDisplay() {
           const dateObject = new Date(message["$createdAt"]);
           const hours = dateObject.getHours();
           const minutes = dateObject.getMinutes();
-          // Format the result as HH:mm
+
           const formattedTime = `${hours < 10 ? "0" : ""}${hours}:${
             minutes < 10 ? "0" : ""
           }${minutes}`;

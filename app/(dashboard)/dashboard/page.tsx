@@ -47,6 +47,8 @@ export default function page() {
     useState(0);
   const [engagedConversations, setEngagedConversations] = useState(0);
 
+  const [analytics, setAnalytics] = useState([]);
+
   //STORES
   const { currCompany, setAllCompanies } = useCompanyStore();
   const { allAnalytics, setAllAnalytics } = useAnalyticsStore();
@@ -121,15 +123,11 @@ export default function page() {
           finalMessages.push(Object.values(combinedMessages));
         });
 
-        // console.log(finalMessages);
-
         setAllCompanies(temp_all_companies);
 
         setAllAnalytics(analytics);
 
         setAllChats(finalMessages);
-
-        // console.log(messages);
 
         //LOADING USER CREDENTIALS
 
@@ -173,32 +171,31 @@ export default function page() {
           )["daily_data_values"]
         );
 
-        const today = new Date();
-        const yesterday = new Date(today);
-        // yesterday.setDate(today.getDate() - 1);
-        yesterday.setDate(today.getDate());
+        // const today = new Date();
+        // const yesterday = new Date(today);
+        // // yesterday.setDate(today.getDate() - 1);
+        // yesterday.setDate(today.getDate());
 
-        const month = yesterday.getMonth() + 1;
-        const formattedMonth = month < 10 ? `0${month}` : month;
+        // const month = yesterday.getMonth() + 1;
+        // const formattedMonth = month < 10 ? `0${month}` : month;
 
-        const formattedYesterday = `${yesterday.getDate()}-${formattedMonth}-${yesterday.getFullYear()}`;
+        // const lastDate = `${yesterday.getDate()}-${formattedMonth}-${yesterday.getFullYear()}`;
+
+        const dates = Object.keys(buttonClicksData);
+        const lastDate = dates[dates.length - 1];
+        const secondLastDate = dates[dates.length - 2];
 
         setButtonClicks(
-          buttonClicksData[formattedYesterday]["total_button_clicks"] || 0
+          buttonClicksData[lastDate]["total_button_clicks"] -
+            buttonClicksData[secondLastDate]["total_button_clicks"] || 0
         );
-        setTotalQuestions(totalQuestionsData[formattedYesterday] || 0);
-        setAverageBotResponseTime(
-          averageBotResponseTimeData[formattedYesterday] || 0
-        );
-        setNoOfUniqueConversations(
-          noOfUniqueConversationsData[formattedYesterday] || 0
-        );
+        setTotalQuestions(totalQuestionsData[lastDate] || 0);
+        setAverageBotResponseTime(averageBotResponseTimeData[lastDate] || 0);
+        setNoOfUniqueConversations(noOfUniqueConversationsData[lastDate] || 0);
         setAverageConversationDuration(
-          averageConversationDurationData[formattedYesterday] || 0
+          averageConversationDurationData[lastDate] || 0
         );
-        setEngagedConversations(
-          engagedConversationsData[formattedYesterday] || 0
-        );
+        setEngagedConversations(engagedConversationsData[lastDate] || 0);
 
         setLoading(false);
       }

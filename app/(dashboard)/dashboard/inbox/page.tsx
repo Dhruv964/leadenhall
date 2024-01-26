@@ -22,13 +22,9 @@ export default function MailPage() {
   }
 
   return (
-    // {currChats.map((e:any) => <div>{}</div>)}
-    // <div className="">{currChats}</div>
     <>
       <div className="flex-col flex">
         <Mail
-          // accounts={accounts}
-          // mails={mails}
           defaultLayout={defaultLayout}
           defaultCollapsed={defaultCollapsed}
           navCollapsedSize={4}

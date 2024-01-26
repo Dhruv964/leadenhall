@@ -24,12 +24,34 @@ export function LineChart1() {
         (e: any) => e.name_of_analytics === "total_questions"
       )["daily_data_values"]
     );
+
+    // const lastSevenDatapoints = dates.slice(dates.length-8, dates.length-1);
+
     const temp = [];
-    for (const day in allDayData) {
-      temp.push({
-        name: day.substring(0, 5).replace("-", "/"),
-        Conversations: allDayData[day],
-      });
+    for (const currDay in allDayData) {
+      if (currDay.length > 10) {
+        const [datePart, timePart] = currDay.split(" ");
+
+        // Split the datePart into day, month, and year
+        const [day, month, year] = datePart.split("-");
+
+        // Split the timePart into hours and minutes
+        const [hours, minutes] = timePart.split(":");
+
+        // Format the date and time parts
+        const formattedDateTime = `${day}/${month} (${parseInt(
+          hours
+        )}:${minutes})`;
+        temp.push({
+          name: formattedDateTime,
+          Conversations: allDayData[currDay],
+        });
+      } else {
+        temp.push({
+          name: currDay.substring(0, 5).replace("-", "/"),
+          Conversations: allDayData[currDay],
+        });
+      }
     }
     setData(temp);
     // console.log(allAnalytics[currCompany]);

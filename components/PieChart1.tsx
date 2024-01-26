@@ -56,6 +56,7 @@ export function PieChart1() {
         (e: any) => e.name_of_analytics === "csat_data"
       )["daily_data_values"]
     );
+
     let temp;
     for (const day in allDayData) {
       temp = [
