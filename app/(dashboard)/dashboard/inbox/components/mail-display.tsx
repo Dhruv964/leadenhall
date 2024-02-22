@@ -243,7 +243,6 @@ export function MailDisplay() {
         </DropdownMenu>
       </div>
       <Separator />
-
       {messages ? (
         <ScrollArea className="h-screen">
           <Card className="h-full mb-[200px] bg-transparent border-none">
@@ -265,24 +264,8 @@ export function MailDisplay() {
                 </div>
                 <div className="text-sm text-muted-foreground pl-5">{date}</div>
               </div>
-
-              {/* <TooltipProvider delayDuration={0}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    size="icon"
-                    variant="outline"
-                    className="ml-auto rounded-full"
-                    onClick={() => setOpen(true)}
-                  >
-                    <Plus className="h-4 w-4" />
-                    <span className="sr-only">New message</span>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent sideOffset={10}>New message</TooltipContent>
-              </Tooltip>
-            </TooltipProvider> */}
             </CardHeader>
+            <Separator className="mb-4" />
             <CardContent>
               <div className="space-y-4">
                 {messages.map((message: any, index: number) => (
@@ -291,7 +274,7 @@ export function MailDisplay() {
                     className={cn(
                       "flex w-max flex-col gap-2 rounded-lg px-3 py-2 text-sm max-w-md md:max-w-xl text-wrap",
                       message.role === "agent"
-                        ? "bg-primary text-primary-foreground"
+                        ? "bg-primary text-primary-foreground ml-auto"
                         : "bg-muted"
                     )}
                   >
@@ -311,27 +294,6 @@ export function MailDisplay() {
                 ))}
               </div>
             </CardContent>
-            {/* <CardContent>
-            <div className="space-y-4">
-              {messages.map((message: any, index: number) => {
-                <div className="p-1">
-                  hi
-                  {/* <div className="text-sm text-muted-foreground pl-5">
-                    {format(
-                      new Date(message["$createdAt"]),
-                      "MMMM dd, yyyy HH:mm:ss"
-                    )}
-                  </div>
-                  <div className="flex-end w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm bg-muted">
-                    {message["user_message"]}
-                  </div>
-                  <div className="flex w-max max-w-[75%] flex-col gap-2 rounded-lg px-3 py-2 text-sm bg-primary text-primary-foreground">
-                    {message["assistant_message"]}
-                  </div> 
-                </div>;
-              })}
-            </div>
-          </CardContent> */}
             <CardFooter></CardFooter>
           </Card>
         </ScrollArea>

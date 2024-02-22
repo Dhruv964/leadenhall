@@ -11,8 +11,7 @@ import { MdPerson4 } from "react-icons/md";
 import { BsRobot } from "react-icons/bs";
 
 export function MailList() {
-  const { allChats, setAllChats, selectedChat, setSelectedChat } =
-    useChatsStore();
+  const { allChats, selectedChat, setSelectedChat } = useChatsStore();
   const { currCompany } = useCompanyStore();
 
   const router = useRouter();
@@ -30,7 +29,7 @@ export function MailList() {
     <div>Loading...</div>
   ) : (
     <ScrollArea className="h-screen mt-5">
-      <div className="flex flex-col gap-2 p-4 pt-0">
+      <div className="flex flex-col gap-2 p-4 pt-0 mb-4">
         {allChats[currCompany].map((user: any, idx: number) => (
           <button
             key={user[0]["$id"]}
@@ -75,32 +74,9 @@ export function MailList() {
                 {user[0].assistant_message.substring(0, 300)}
               </span>
             </div>
-            {/* {chat.user_message.length ? null : (
-              <div className="flex items-center gap-2">
-                {chat.labels.map((label) => (
-                  <Badge key={label} variant={getBadgeVariantFromLabel(label)}>
-                    {label}
-                  </Badge>
-                ))}
-              </div>
-            )} */}
           </button>
         ))}
       </div>
     </ScrollArea>
   );
-}
-
-function getBadgeVariantFromLabel(
-  label: string
-): ComponentProps<typeof Badge>["variant"] {
-  if (["work"].includes(label.toLowerCase())) {
-    return "default";
-  }
-
-  if (["personal"].includes(label.toLowerCase())) {
-    return "outline";
-  }
-
-  return "secondary";
 }

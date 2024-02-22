@@ -29,29 +29,29 @@ export function LineChart1() {
 
     const temp = [];
     for (const currDay in allDayData) {
-      if (currDay.length > 10) {
-        const [datePart, timePart] = currDay.split(" ");
+      // if (currDay.length > 10) {
+      //   const [datePart, timePart] = currDay.split(" ");
 
-        // Split the datePart into day, month, and year
-        const [day, month, year] = datePart.split("-");
+      //   // Split the datePart into day, month, and year
+      //   const [day, month, year] = datePart.split("-");
 
-        // Split the timePart into hours and minutes
-        const [hours, minutes] = timePart.split(":");
+      //   // Split the timePart into hours and minutes
+      //   const [hours, minutes] = timePart.split(":");
 
-        // Format the date and time parts
-        const formattedDateTime = `${day}/${month} (${parseInt(
-          hours
-        )}:${minutes})`;
-        temp.push({
-          name: formattedDateTime,
-          Conversations: allDayData[currDay],
-        });
-      } else {
-        temp.push({
-          name: currDay.substring(0, 5).replace("-", "/"),
-          Conversations: allDayData[currDay],
-        });
-      }
+      //   // Format the date and time parts
+      //   const formattedDateTime = `${day}/${month} (${parseInt(
+      //     hours
+      //   )}:${minutes})`;
+      //   temp.push({
+      //     name: formattedDateTime,
+      //     Conversations: allDayData[currDay],
+      //   });
+      // } else {
+      temp.push({
+        name: currDay.substring(0, 5).replace("-", "/"),
+        Conversations: allDayData[currDay],
+      });
+      // }
     }
     setData(temp);
     // console.log(allAnalytics[currCompany]);
