@@ -35,10 +35,12 @@ import {
 } from "lucide-react";
 
 import { FaGoogle } from "react-icons/fa";
+import { FaUpload } from "react-icons/fa6";
 
 export type Icon = LucideIcon;
 
 export const Icons = {
+  upload: FaUpload,
   google: FaGoogle,
   inbox: Inbox,
   template: LayoutTemplate,

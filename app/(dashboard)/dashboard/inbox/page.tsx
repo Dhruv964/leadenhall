@@ -18,7 +18,7 @@ export default function MailPage() {
   const { allCompanies } = useCompanyStore();
 
   if (allCompanies.length === 0) {
-    router.push("/");
+    router.push("/dashboard");
   }
 
   return (

@@ -60,6 +60,7 @@ export default function page() {
       const userResponse = await fetch("api/checkUsers", {
         method: "GET",
       });
+      
       const userTemp = await userResponse.json();
       const userData = userTemp["documents"].find(
         (e: any) => e.email == session?.user?.email

@@ -124,6 +124,12 @@ export const navItems: NavItem[] = [
     icon: "inbox",
     label: "inbox",
   },
+  {
+    title: "Upload",
+    href: "/dashboard/upload",
+    icon: "upload",
+    label: "upload",
+  },
   // {
   //   title: "Message Templates",
   //   href: "/dashboard/msg_templates",
