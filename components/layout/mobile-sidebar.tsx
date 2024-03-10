@@ -30,24 +30,6 @@ export function MobileSidebar({ className }: SidebarProps) {
                 <DashboardNav items={navItems} setOpen={setOpen} />
               </div>
             </div>
-            <div className="mt-10">
-              <Card>
-                <CardContent className=" flex flex-col px-2 m-2 ">
-                  <div className="items-center space-y-4 p-4">
-                    <p>Blozum Credits</p>
-                    <Progress value={33} />
-                  </div>
-                  <div className="items-center space-y-4 p-4">
-                    <p>Builder characters</p>
-                    <Progress value={100} />
-                  </div>
-                  <div className="items-center space-y-4 p-4">
-                    <p>Search Chat Requests</p>
-                    <Progress value={66} />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
           </div>
         </SheetContent>
       </Sheet>

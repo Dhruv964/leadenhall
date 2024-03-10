@@ -5,14 +5,15 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { getServerSession } from "next-auth";
+import Header from "@/components/layout/header";
 // import { UserValuesProvider } from './UserContext.js';
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    default: "Blozum AI",
-    template: "%s - Blozum",
+    default: "Leadenhall",
+    template: "%s - Leadenhall",
   },
   description: "Analytics",
 };
@@ -22,16 +23,15 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession();
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} overflow-hidden`}>
-        <Providers session={session}>
-          {/* <UserValuesProvider> */}
+        <Header />
+        <div className="flex h-screen overflow-hidden">
+          {/* <Sidebar /> */}
+          <main className="w-full pt-16">{children}</main>
           <Toaster />
-          {children}
-          {/* </UserValuesProvider> */}
-        </Providers>
+        </div>
       </body>
     </html>
   );

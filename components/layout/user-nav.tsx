@@ -49,7 +49,7 @@ export function UserNav() {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() =>
-              signOut({ callbackUrl: "https://analytics.blozum.com/" })
+              signOut({ callbackUrl: "https://leadenhallanalytics.com/" })
             }
           >
             Log out
@@ -57,5 +57,5 @@ export function UserNav() {
         </DropdownMenuContent>
       </DropdownMenu>
     );
-  }
+  } else return null;
 }

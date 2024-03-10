@@ -1,6 +1,3 @@
-"use client";
-import { useAnalyticsStore, useCompanyStore } from "@/store/newt";
-import { useEffect, useState } from "react";
 import {
   PieChart,
   Pie,
@@ -11,12 +8,15 @@ import {
   Legend,
 } from "recharts";
 
-const COLORS = ["#22c55e", "#98FB98", "#FF8042"];
+const COLORS = ["#22c55e", "#98FB98", "#FF8042", "#8884d8", "#e0666c"];
 
-// const data = [
-//   { name: "Group A", value: 2400 },
-//   { name: "Group B", value: 4567 },
-// ];
+const data = [
+  { name: "1-10", value: 13 },
+  { name: "11-20", value: 20 },
+  { name: "21-40", value: 40 },
+  { name: "41-60", value: 7 },
+  { name: "60+", value: 20 },
+];
 
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({
@@ -36,7 +36,6 @@ const renderCustomizedLabel = ({
     <text
       x={x}
       y={y}
-      // fill="text-muted"
       textAnchor={x > cx ? "start" : "end"}
       dominantBaseline="central"
     >
@@ -46,33 +45,6 @@ const renderCustomizedLabel = ({
 };
 
 export function PieChart1() {
-  const { allAnalytics } = useAnalyticsStore();
-  const { currCompany } = useCompanyStore();
-  const [data, setData] = useState<any>([]);
-
-  useEffect(() => {
-    const allDayData = JSON.parse(
-      allAnalytics[currCompany].find(
-        (e: any) => e.name_of_analytics === "csat_data"
-      )["daily_data_values"]
-    );
-
-    let temp;
-    for (const day in allDayData) {
-      temp = [
-        {
-          name: "Satisfied",
-          value: allDayData[day]["likes"],
-        },
-        {
-          name: "Dissatisfied",
-          value: allDayData[day]["dislikes"],
-        },
-      ];
-    }
-    setData(temp);
-  }, [allAnalytics]);
-
   return (
     <ResponsiveContainer width="100%" height={350}>
       <PieChart width={500} height={500}>
