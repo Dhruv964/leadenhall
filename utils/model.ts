@@ -1,6 +1,6 @@
 import { CSVLoader } from 'langchain/document_loaders/fs/csv'
 import { ChatOpenAI, OpenAIEmbeddings } from '@langchain/openai'
-import { HNSWLib } from '@langchain/community/vectorstores/hnswlib'
+import { MemoryVectorStore } from 'langchain/vectorstores/memory'
 import { ConversationalRetrievalQAChain } from 'langchain/chains'
 import { BufferMemory } from 'langchain/memory'
 
@@ -9,11 +9,11 @@ require('dotenv').config({ path: __dirname + '/.env' })
 const createContext = async (filepath: string) => {
   const loader = new CSVLoader(filepath)
   const docs = await loader.load()
-  const vectorStore = await HNSWLib.fromDocuments(docs, new OpenAIEmbeddings())
+  const vectorStore = await MemoryVectorStore.fromDocuments(docs, new OpenAIEmbeddings())
   return vectorStore
 }
 
-const setUpChain = async (store: Promise<HNSWLib>) => {
+const setUpChain = async (store: Promise<MemoryVectorStore>) => {
   let streamedResponse = ''
   const streamingModel = new ChatOpenAI({
     streaming: true,
